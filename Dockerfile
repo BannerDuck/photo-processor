@@ -1,8 +1,10 @@
+# ================== Base Image ==================
 FROM python:3.12-slim
 
+# ================== Set Working Directory ==================
 WORKDIR /app
 
-# Install system dependencies
+# ================== Install System Dependencies ==================
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
@@ -12,14 +14,14 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy Python dependencies
+# ================== Copy Python Dependencies ==================
 COPY requirements.txt .
 
-# Install Python packages
+# ================== Install Python Packages ==================
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# ================== Copy Application Code ==================
 COPY . .
 
-# Default command
+# ================== Default Command ==================
 CMD ["python", "photo_processor.py"]
