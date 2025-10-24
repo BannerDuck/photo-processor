@@ -1,6 +1,6 @@
 paths:
-  temp_dir: "${TEMP_DIR:-/data/photos/temp}"
-  processed_dir: "${PROCESSED_DIR:-/data/photos/processed}"
-  processed_dir_rembg: "${PROCESSED_DIR_REMBG:-/data/photos/processed_rembg}"
-  originals_dir: "${ORIGINALS_DIR:-/data/photos/originals}"
-  log_file: "${LOG_FILE:-/data/processing.log}"
+  temp_dir: "/app/temp"
+  processed_dir: "/app/processed"
+  processed_dir_rembg: "/app/processed_rembg"
+  originals_dir: "/app/originals"
+  log_file: "/app/photo_processor.log"
