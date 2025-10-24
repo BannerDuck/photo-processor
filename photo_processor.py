@@ -1,7 +1,5 @@
 import os
-import re
 import time
-import yaml
 import logging
 from datetime import datetime
 from PIL import Image, ImageFilter
@@ -15,34 +13,12 @@ from watchdog.events import FileSystemEventHandler
 # ================== Suppress Mediapipe/TensorFlow logs ==================
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
-# ================== YAML Environment Variable Support ==================
-def env_var_constructor(loader, node):
-    """Expands environment variables inside YAML values (e.g. ${VAR:-default})."""
-    value = loader.construct_scalar(node)
-    pattern = re.compile(r'\${([^:}]+)(:-([^}]*))?}')
-    
-    def replacer(match):
-        env_var = match.group(1)
-        default = match.group(3) if match.group(3) else ''
-        return os.environ.get(env_var, default)
-    
-    return pattern.sub(lambda m: replacer(m), value)
-
-yaml.SafeLoader.add_implicit_resolver('!env_var', re.compile(r'\${[^}^{]+}'))
-yaml.SafeLoader.add_constructor('!env_var', env_var_constructor)
-
-# ================== Load Config File ==================
-CONFIG_FILE = os.environ.get("CONFIG_FILE", "config.yaml")
-with open(CONFIG_FILE, "r") as f:
-    config = yaml.safe_load(f)
-
-PATHS = config.get("paths", {})
-
-TEMP_DIR = PATHS.get("temp_dir", "/app/temp")
-PROCESSED_DIR = PATHS.get("processed_dir", "/app/processed")
-PROCESSED_DIR_REMBG = PATHS.get("processed_dir_rembg", "/app/processed_rembg")
-ORIGINALS_DIR = PATHS.get("originals_dir", "/app/originals")
-LOG_FILE = PATHS.get("log_file", "/app/photo_processor.log")
+# ================== Paths from environment ==================
+TEMP_DIR = os.environ.get("TEMP_DIR", "/app/temp")
+PROCESSED_DIR = os.environ.get("PROCESSED_DIR", "/app/processed")
+PROCESSED_DIR_REMBG = os.environ.get("PROCESSED_DIR_REMBG", "/app/processed_rembg")
+ORIGINALS_DIR = os.environ.get("ORIGINALS_DIR", "/app/originals")
+LOG_FILE = os.environ.get("LOG_FILE", "/app/photo_processor.log")
 
 # ================== Ensure folders exist ==================
 for folder in [TEMP_DIR, PROCESSED_DIR, PROCESSED_DIR_REMBG, ORIGINALS_DIR]:
