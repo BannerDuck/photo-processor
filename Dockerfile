@@ -1,14 +1,15 @@
-FROM python:3.11-slim
+# Use official Python image
+FROM python:3.12-slim
 
+# Set working directory
 WORKDIR /app
 
-COPY photo_processor.py /app/
-COPY config.yaml /app/
-
 # Install dependencies
-RUN pip install --no-cache-dir opencv-python-headless mediapipe pillow rembg watchdog pyyaml numpy
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Set environment variables (optional defaults)
-ENV CONFIG_FILE=/app/config.yaml
+# Copy application code and config
+COPY . .
 
+# Default command
 CMD ["python", "photo_processor.py"]
