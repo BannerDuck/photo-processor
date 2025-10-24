@@ -2,34 +2,25 @@ version: "3.9"
 
 services:
   photo_processor:
-    image: photo_processor:latest  # Optional: use local build or pull from registry
+    build:
+      context: https://github.com/BannerDuck/photo-processor.git
+      dockerfile: Dockerfile
     container_name: photo_processor
     restart: unless-stopped
 
     # ================== Environment Variables ==================
     environment:
-      # Folder where users drop images to be processed
-      TEMP_DIR: /data/temp
-
-      # Folder where processed images with white background will be saved
-      PROCESSED_DIR: /data/processed
-
-      # Folder where processed images using rembg are saved
-      PROCESSED_DIR_REMBG: /data/processed_rembg
-
-      # Folder where original images are moved after processing
-      ORIGINALS_DIR: /data/originals
-
-      # Path for log file inside container
+      TEMP_DIR: /data/temp                                # Folder where users drop images to be processed                               
+      PROCESSED_DIR: /data/processed                      # Folder where 1st processed images with white background will be saved
+      PROCESSED_DIR_REMBG: /data/processed_rembg          # Folder where 2nd processed images with white background will be saved
+      ORIGINALS_DIR: /data/originals                      # Folder where original images are moved after processing
       LOG_FILE: /data/photo_processor.log
 
     # ================== Volume Mounts ==================
     volumes:
-      # Map host folders to container folders
-      - /host/path/to/temp:/data/temp
-      - /host/path/to/processed:/data/processed
-      - /host/path/to/processed_rembg:/data/processed_rembg
-      - /host/path/to/originals:/data/originals
-      # Optional: map log file location
-      - /host/path/to/photo_processor.log:/data/photo_processor.log
-
+      - ./data/temp:/data/temp
+      - ./data/processed:/data/processed
+      - ./data/processed_rembg:/data/processed_rembg
+      - ./data/originals:/data/originals
+      - ./data/photo_processor.log:/data/photo_processor.log
+      
