@@ -1,21 +1,12 @@
 version: "3.9"
-
 services:
-  photo-processor:
-    image: yourdockerhubuser/photo-processor:latest
-    container_name: photo-processor
-    restart: unless-stopped
-
-    # Mount local folders and config file
+  photo_processor:
+    build: .
+    container_name: photo_processor
     volumes:
-      - ./photos:/data/photos
+      - ./data/temp:/app/temp
+      - ./data/processed:/app/processed
+      - ./data/processed_rembg:/app/processed_rembg
+      - ./data/originals:/app/originals
       - ./config.yaml:/app/config.yaml
-
-    environment:
-      - CONFIG_FILE=/app/config.yaml
-      - TEMP_DIR=/data/photos/temp
-      - PROCESSED_DIR=/data/photos/processed
-      - PROCESSED_DIR_REMBG=/data/photos/processed_rembg
-      - ORIGINALS_DIR=/data/photos/originals
-      - LOG_FILE=/data/processing.log
-      - TZ=America/New_York
+    restart: unless-stopped
