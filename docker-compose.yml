@@ -3,10 +3,15 @@ services:
   photo_processor:
     build: .
     container_name: photo_processor
+    environment:
+      TEMP_DIR: /data/temp
+      PROCESSED_DIR: /data/processed
+      PROCESSED_DIR_REMBG: /data/processed_rembg
+      ORIGINALS_DIR: /data/originals
+      LOG_FILE: /data/photo_processor.log
     volumes:
-      - ./data/temp:/app/temp
-      - ./data/processed:/app/processed
-      - ./data/processed_rembg:/app/processed_rembg
-      - ./data/originals:/app/originals
-      - ./config.yaml:/app/config.yaml
+      - ./data/temp:/data/temp
+      - ./data/processed:/data/processed
+      - ./data/processed_rembg:/data/processed_rembg
+      - ./data/originals:/data/originals
     restart: unless-stopped
